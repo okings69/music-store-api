@@ -186,56 +186,10 @@
 }
 
 .shuffle-icon {
-  position: relative;
-  width: 22px;
-  height: 18px;
-  display: inline-block;
-}
-
-.shuffle-icon::before,
-.shuffle-icon::after {
-  content: "";
-  position: absolute;
-  left: 2px;
-  width: 14px;
-  height: 2px;
-  background: #0b0b0b;
-  border-radius: 999px;
-}
-
-.shuffle-icon::before {
-  top: 5px;
-  transform: rotate(28deg);
-}
-
-.shuffle-icon::after {
-  bottom: 5px;
-  transform: rotate(-28deg);
-}
-
-.shuffle-icon span {
-  display: none;
-}
-
-.seed-row button::before,
-.seed-row button::after {
-  content: "";
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  border-top: 2px solid #0b0b0b;
-  border-right: 2px solid #0b0b0b;
-  right: 18px;
-}
-
-.seed-row button::before {
-  top: 15px;
-  transform: rotate(45deg);
-}
-
-.seed-row button::after {
-  bottom: 15px;
-  transform: rotate(135deg);
+  width: 24px;
+  height: 24px;
+  display: block;
+  color: #0b0b0b;
 }
 
 .sr-only {
