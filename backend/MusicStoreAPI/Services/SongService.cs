@@ -186,16 +186,16 @@ public class SongService
 
     private static string[] GroupDescriptors(string locale, Faker faker) => locale switch
     {
-        "de-DE" => new[] { "Die", "Neon", "Silber", faker.Color.Color(), "Elektrische" },
-        "uk-UA" => new[] { "Нічні", "Сонячні", "Міські", faker.Color.Color(), "Електричні" },
-        _ => new[] { "The", "Neon", "Cosmic", faker.Color.Color(), "Electric" }
+        "de-DE" => new[] { "Die", "Neon", "Silber", faker.Commerce.Color(), "Elektrische" },
+        "uk-UA" => new[] { "Нічні", "Сонячні", "Міські", faker.Commerce.Color(), "Електричні" },
+        _ => new[] { "The", "Neon", "Cosmic", faker.Commerce.Color(), "Electric" }
     };
 
     private static string[] GroupEndings(string locale, Faker faker) => locale switch
     {
-        "de-DE" => new[] { "Kollektiv", "Wellen", "Klänge", "Träumer", faker.Animal.Type() },
-        "uk-UA" => new[] { "Хвилі", "Мрійники", "Звуки", "Світанок", faker.Animal.Type() },
-        _ => new[] { "Collective", "Waves", "Echoes", "Dreamers", faker.Animal.Type() }
+        "de-DE" => new[] { "Kollektiv", "Wellen", "Klänge", "Träumer", faker.Commerce.Department() },
+        "uk-UA" => new[] { "Хвилі", "Мрійники", "Звуки", "Світанок", faker.Commerce.Department() },
+        _ => new[] { "Collective", "Waves", "Echoes", "Dreamers", faker.Commerce.Department() }
     };
 
     private static string[] AlbumPlaces(string locale, Faker faker) => locale switch
