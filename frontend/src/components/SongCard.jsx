@@ -5,7 +5,7 @@ export default function SongCard({ song }) {
 
       <div className="song-header">
         <span className="song-index">#{song.index}</span>
-        <span className="song-likes">❤ {song.likes}</span>
+        <span className="song-likes">Likes {song.likes}</span>
       </div>
 
       <h3>{song.title}</h3>

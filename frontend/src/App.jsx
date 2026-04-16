@@ -23,6 +23,7 @@ function App() {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadToken, setReloadToken] = useState(0);
 
   useEffect(() => {
     let ignore = false;
@@ -40,7 +41,7 @@ function App() {
         if (!ignore) {
           setSongs(data);
         }
-      } catch (loadError) {
+      } catch {
         if (!ignore) {
           setError("Unable to load songs.");
         }
@@ -56,7 +57,7 @@ function App() {
     return () => {
       ignore = true;
     };
-  }, [params, tablePage]);
+  }, [params, tablePage, reloadToken]);
 
   function updateParams(partialParams) {
     setParams((current) => ({ ...current, ...partialParams }));
@@ -68,6 +69,10 @@ function App() {
     updateParams({ seed: randomSeed64() });
   }
 
+  function handleRetry() {
+    setReloadToken((current) => current + 1);
+  }
+
   return (
     <div className="app">
       <div className="shell">
@@ -75,6 +80,10 @@ function App() {
           <div>
             <p className="eyebrow">Music Store Showcase</p>
             <h1>Explore generated songs in two views</h1>
+            <p className="hero-copy">
+              A full-stack demo that generates reproducible tracks, covers, and short audio previews
+              from a configurable seed.
+            </p>
           </div>
         </header>
 
@@ -121,8 +130,18 @@ function App() {
           )}
         </section>
 
-        {error ? <div className="feedback error">{error}</div> : null}
+        {error ? (
+          <div className="feedback error feedback-with-action">
+            <span>{error}</span>
+            <button type="button" className="feedback-action" onClick={handleRetry}>
+              Retry
+            </button>
+          </div>
+        ) : null}
         {loading && view === "table" ? <div className="feedback">Loading songs...</div> : null}
+        {!loading && !error && view === "table" && songs.length === 0 ? (
+          <div className="feedback">No songs found for the selected parameters.</div>
+        ) : null}
 
         {view === "table" ? (
           <SongTable
@@ -132,6 +151,16 @@ function App() {
         ) : (
           <Gallery params={params} resetToken={galleryResetToken} />
         )}
+
+        <section className="about-panel">
+          <p className="about-label">About this project</p>
+          <h2>Generated media, deterministic logic, and deploy-ready full stack</h2>
+          <p>
+            The frontend is built with React and Vite, while the backend uses ASP.NET Core to
+            generate seeded song metadata, dynamic cover art, and short WAV previews. Render hosts
+            both the API and the static frontend.
+          </p>
+        </section>
       </div>
     </div>
   );

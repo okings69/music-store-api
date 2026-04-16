@@ -1,22 +1,80 @@
 # Music Store Showcase
 
-Full-stack project with:
+Full-stack music store app built with ASP.NET Core and React/Vite, featuring seeded fake song generation, pagination, gallery view, cover images, and audio preview.
 
-- an ASP.NET Core backend that generates songs, covers, and audio clips
-- a React/Vite frontend that displays the data in Table View and Gallery View
+## Project Overview
 
-## What the project does
+Music Store Showcase is a deterministic media-generation demo. A user selects a language, a 64-bit seed, and an average likes value, then explores generated tracks in two views:
 
-- deterministic generation by seed
-- language selection
+- a paginated table view with expandable details
+- a gallery view with infinite scrolling
+
+Each generated song includes metadata, a dynamic cover image, a short review, and a generated WAV preview.
+
+## Tech Stack
+
+- Backend: ASP.NET Core Web API (.NET 10)
+- Frontend: React + Vite
+- Data generation: Bogus
+- Image generation: SixLabors.ImageSharp
+- Deployment: Render
+
+## Live Deployment
+
+- Frontend: `https://music-store-frontend-8jop.onrender.com`
+- Backend API: `https://music-store-api-k1ty.onrender.com`
+- Health check: `https://music-store-api-k1ty.onrender.com/healthz`
+
+## Screenshots
+
+Add 1 to 3 screenshots in a folder such as `docs/screenshots/` and reference them here for the final GitHub presentation.
+
+Suggested captures:
+
+- toolbar and table view
+- expanded row detail view
+- gallery view
+
+## Main Features
+
+- deterministic song generation from a seed
+- language switching
 - adjustable average likes
-- table view with pagination
-- gallery view with infinite scrolling
-- expandable table row with cover, review, and audio
-- dynamically generated cover
-- audio clip playable by seed
+- paginated table view
+- expandable track detail panel
+- gallery with infinite scrolling
+- generated cover images
+- generated audio preview
+- Render deployment for both frontend and backend
 
-## Run locally
+## Project Structure
+
+```text
+Task5/
+├── backend/
+│   └── MusicStoreAPI/
+│       ├── Controllers/
+│       ├── DTOs/
+│       ├── Models/
+│       ├── Services/
+│       ├── Utils/
+│       ├── Program.cs
+│       └── Dockerfile
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── App.jsx
+│   │   └── App.css
+│   ├── .env.example
+│   └── package.json
+├── render.yaml
+└── README.md
+```
+
+## Run Locally
 
 ### Backend
 
@@ -25,12 +83,13 @@ cd backend\MusicStoreAPI
 dotnet run
 ```
 
-Local API:
+Local endpoints:
 
-- `http://localhost:5000/api/songs`
+- `http://localhost:5000/`
 - `http://localhost:5000/healthz`
+- `http://localhost:5000/api/songs`
 
-Swagger in development :
+Swagger in development:
 
 ```powershell
 $env:ASPNETCORE_ENVIRONMENT="Development"
@@ -45,6 +104,7 @@ Then open:
 
 ```powershell
 cd frontend
+copy .env.example .env
 cmd /c npm install
 cmd /c npm run dev
 ```
@@ -53,68 +113,35 @@ Then open:
 
 - `http://localhost:5173`
 
-## How to explain the project verbally
+## API Example
 
-### 1. Frontend
+```text
+http://localhost:5000/api/songs?seed=1234&page=1&avgLikes=5&locale=en-US
+```
 
-The frontend is located in `frontend/src`.
+## Manual Checks
 
-- `App.jsx` controls global state: `seed`, `locale`, `avgLikes`, active view, and table pagination.
-- `Toolbar.jsx` contains user controls.
-- `SongTable.jsx` displays the paginated table with expandable detail.
-- `Gallery.jsx` displays cards with infinite loading.
-- `SongCard.jsx` displays a song in gallery mode.
-- `services/api.js` centralizes the call to the backend.
+- same `seed` + same parameters returns the same songs
+- changing `page` returns the next 20 songs
+- `avgLikes=0` and `avgLikes=10` work correctly
+- invalid `page` returns an error
+- invalid `avgLikes` returns an error
+- table row expands correctly
+- gallery keeps loading more songs
+- cover and audio endpoints work for generated songs
 
-### 2. Backend
+## Deployment Notes
 
-The backend is located in `backend/MusicStoreAPI`.
+The project includes a ready-to-use `render.yaml`.
 
-- `Program.cs` configures the application and routes
-- `SongsController.cs` exposes `/api/songs`
-- `SongService.cs` generates the data
-- `CoverController.cs` generates the cover art
-- `AudioController.cs` generates the audio snippet
-- `AudioPreviewGenerator.cs` synthesizes a deterministic WAV file
-- `SeedHelper.cs` ensures reproducibility
+- the backend is deployed as a Docker web service
+- the frontend is deployed as a static site
+- `VITE_API_URL` is injected by Render in production
 
-### 3. Important Logic
+## Future Improvements
 
-- Same `seed` + same parameters = same results
-- Changing only the likes does not change the titles/artists/albums
-- Changing `seed` or `locale` regenerates the songs
-- The table returns to page 1 when the parameters change
-- The gallery restarts from the top when the parameters change
-
-## Tests to perform before rendering
-
-- Verify that `GET /api/songs` Returns 20 songs correctly
-- Verify that the same seed returns the same tracks
-- Verify that `avgLikes=0`, `0.5`, `3.7`, `10` works
-- Verify the 3 languages
-- Verify table and pagination
-- Verify gallery and infinite scrolling
-- Verify that a table row opens and closes
-- Verify that a cover displays with the correct title and artist
-- Verify that two `audioUrl`s from different seeds do not play exactly the same thing
-
-## Render Deployment
-
-The repo already contains a `render.yaml`.
-
-### Simple Option
-
-### Important
-
-In `render.yaml`, the frontend variable `VITE_API_URL` points to:
-
-- `https://music-store-api.onrender.com/api`
-
-If Render gives you a different subdomain, replace this URL with the actual backend URL.
-
-The Render backend uses a `Dockerfile` to avoid runtime surprises on .NET.
-
-## Current Limitations
-
-- The audio is generated correctly, but remains musically simple.
-- The data is more realistic than initially, but can still be enriched.
+- add automated backend tests
+- improve multilingual text quality and encoding consistency
+- add screenshot assets and a short demo GIF
+- refine loading states and skeleton UI
+- add architecture diagram and challenge/solution section

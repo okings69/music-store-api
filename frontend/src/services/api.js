@@ -1,42 +1,20 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV
-    ? "http://localhost:5000/api"
-    : "https://music-store-api-k1ty.onrender.com/api");
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-function normalizeSongParams(seedOrParams, page, avgLikes, locale) {
-  if (typeof seedOrParams === "object" && seedOrParams !== null) {
-    return {
-      seed: seedOrParams.seed ?? 12345,
-      page: seedOrParams.page ?? 1,
-      avgLikes: seedOrParams.avgLikes ?? seedOrParams.likes ?? 5,
-      locale: seedOrParams.locale ?? "en-US"
-    };
-  }
-
-  return {
-    seed: seedOrParams ?? 12345,
-    page: page ?? 1,
-    avgLikes: avgLikes ?? 5,
-    locale: locale ?? "en-US"
-  };
-}
-
-export const fetchSongs = async (seedOrParams, page, avgLikes, locale) => {
-  const normalized = normalizeSongParams(seedOrParams, page, avgLikes, locale);
+export async function fetchSongs({ seed = 12345, page = 1, avgLikes = 5, locale = "en-US" }) {
   const params = new URLSearchParams({
-    seed: normalized.seed.toString(),
-    page: normalized.page.toString(),
-    avgLikes: normalized.avgLikes.toString(),
-    locale: normalized.locale
+    seed: String(seed),
+    page: String(page),
+    avgLikes: String(avgLikes),
+    locale
   });
 
-  const response = await fetch(`${API_BASE_URL}/songs?${params}`);
+  const response = await fetch(`${API_BASE_URL}/songs?${params.toString()}`);
+
   if (!response.ok) {
-    throw new Error("Failed to load songs");
+    throw new Error(`API error: ${response.status}`);
   }
 
   return response.json();
-};
+}
 
 export const getSongs = fetchSongs;
