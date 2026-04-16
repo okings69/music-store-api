@@ -6,13 +6,18 @@ namespace MusicStoreAPI.Services;
 
 public class SongService
 {
-    private const string ApiBaseUrl = "http://localhost:5000/api";
     private static readonly Dictionary<string, string> LocaleMap = new()
     {
         ["en-US"] = "en",
         ["de-DE"] = "de",
         ["uk-UA"] = "uk"
     };
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public SongService(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
 
     public List<SongDto> GenerateSongs(long seed, int page, double avgLikes, string locale)
     {
@@ -111,13 +116,24 @@ public class SongService
     {
         var encodedTitle = Uri.EscapeDataString(title);
         var encodedArtist = Uri.EscapeDataString(artist);
-        return $"{ApiBaseUrl}/cover?title={encodedTitle}&artist={encodedArtist}&seed={Math.Abs(seed)}";
+        return $"{GetApiBaseUrl()}/cover?title={encodedTitle}&artist={encodedArtist}&seed={Math.Abs(seed)}";
     }
 
     private string GenererAudioUrl(int seed, string genre)
     {
         var encodedGenre = Uri.EscapeDataString(genre);
-        return $"{ApiBaseUrl}/audio?seed={Math.Abs(seed)}&genre={encodedGenre}";
+        return $"{GetApiBaseUrl()}/audio?seed={Math.Abs(seed)}&genre={encodedGenre}";
+    }
+
+    private string GetApiBaseUrl()
+    {
+        var request = _httpContextAccessor.HttpContext?.Request;
+        if (request is not null && request.Host.HasValue)
+        {
+            return $"{request.Scheme}://{request.Host}/api";
+        }
+
+        return "http://localhost:5000/api";
     }
 
     private string GenererAvis(Random random, string locale)
