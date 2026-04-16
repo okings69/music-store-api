@@ -33,7 +33,8 @@ export default function Toolbar({ params, onChange, onRandomizeSeed }) {
             onChange={(event) => onChange({ seed: event.target.value.replace(/[^\d-]/g, "") || "0" })}
           />
           <button type="button" onClick={onRandomizeSeed}>
-            Random
+            <span className="shuffle-icon" aria-hidden="true"></span>
+            <span className="sr-only">Randomize seed</span>
           </button>
         </div>
       </div>
