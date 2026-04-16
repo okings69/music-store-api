@@ -30,6 +30,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 app.UseAuthorization();
+app.MapGet("/", () => Results.Ok(new { message = "API is running" }));
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 app.MapControllers();
 
