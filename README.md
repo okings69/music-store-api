@@ -1,22 +1,22 @@
 # Music Store Showcase
 
-Projet full-stack avec :
+Full-stack project with:
 
-- un backend ASP.NET Core qui génère des chansons, covers et extraits audio
-- un frontend React/Vite qui affiche les données en `Table View` et `Gallery View`
+- an ASP.NET Core backend that generates songs, covers, and audio clips
+- a React/Vite frontend that displays the data in Table View and Gallery View
 
-## Ce que fait le projet
+## What the project does
 
-- génération déterministe par `seed`
-- choix de langue
-- moyenne de likes modifiable
-- vue table avec pagination
-- vue galerie avec scroll infini
-- ligne table extensible avec cover, review et audio
-- cover générée dynamiquement
-- extrait audio reproductible par seed
+- deterministic generation by seed
+- language selection
+- adjustable average likes
+- table view with pagination
+- gallery view with infinite scrolling
+- expandable table row with cover, review, and audio
+- dynamically generated cover
+- audio clip playable by seed
 
-## Lancer en local
+## Run locally
 
 ### Backend
 
@@ -25,19 +25,19 @@ cd backend\MusicStoreAPI
 dotnet run
 ```
 
-API locale :
+Local API:
 
 - `http://localhost:5000/api/songs`
 - `http://localhost:5000/healthz`
 
-Swagger en développement :
+Swagger in development :
 
 ```powershell
 $env:ASPNETCORE_ENVIRONMENT="Development"
 dotnet run
 ```
 
-Puis ouvrir :
+Then open:
 
 - `http://localhost:5000/swagger`
 
@@ -49,93 +49,72 @@ cmd /c npm install
 cmd /c npm run dev
 ```
 
-Puis ouvrir :
+Then open:
 
 - `http://localhost:5173`
 
-## Comment expliquer le projet à l'oral
+## How to explain the project verbally
 
 ### 1. Frontend
 
-Le frontend est dans `frontend/src`.
+The frontend is located in `frontend/src`.
 
-- `App.jsx` pilote l'état global : `seed`, `locale`, `avgLikes`, vue active et pagination table
-- `Toolbar.jsx` contient les contrôles utilisateur
-- `SongTable.jsx` affiche la table paginée avec détail extensible
-- `Gallery.jsx` affiche les cartes avec chargement infini
-- `SongCard.jsx` affiche une chanson en mode galerie
-- `services/api.js` centralise l'appel vers le backend
+- `App.jsx` controls global state: `seed`, `locale`, `avgLikes`, active view, and table pagination.
+- `Toolbar.jsx` contains user controls.
+- `SongTable.jsx` displays the paginated table with expandable detail.
+- `Gallery.jsx` displays cards with infinite loading.
+- `SongCard.jsx` displays a song in gallery mode.
+- `services/api.js` centralizes the call to the backend.
 
 ### 2. Backend
 
-Le backend est dans `backend/MusicStoreAPI`.
+The backend is located in `backend/MusicStoreAPI`.
 
-- `Program.cs` configure l'application et les routes
-- `SongsController.cs` expose `/api/songs`
-- `SongService.cs` génère les données
-- `CoverController.cs` génère la cover
-- `AudioController.cs` génère l'extrait audio
-- `AudioPreviewGenerator.cs` synthétise un WAV déterministe
-- `SeedHelper.cs` garantit la reproductibilité
+- `Program.cs` configures the application and routes
+- `SongsController.cs` exposes `/api/songs`
+- `SongService.cs` generates the data
+- `CoverController.cs` generates the cover art
+- `AudioController.cs` generates the audio snippet
+- `AudioPreviewGenerator.cs` synthesizes a deterministic WAV file
+- `SeedHelper.cs` ensures reproducibility
 
-### 3. Logique importante
+### 3. Important Logic
 
-- même `seed` + mêmes paramètres = mêmes résultats
-- changer seulement les likes ne change pas les titres/artistes/albums
-- changer `seed` ou `locale` régénère les chansons
-- la table revient à la page 1 quand les paramètres changent
-- la galerie repart du haut quand les paramètres changent
+- Same `seed` + same parameters = same results
+- Changing only the likes does not change the titles/artists/albums
+- Changing `seed` or `locale` regenerates the songs
+- The table returns to page 1 when the parameters change
+- The gallery restarts from the top when the parameters change
 
-## Tests à faire avant rendu
+## Tests to perform before rendering
 
-- vérifier que `GET /api/songs` retourne bien 20 chansons
-- vérifier que le même seed redonne les mêmes morceaux
-- vérifier que `avgLikes=0`, `0.5`, `3.7`, `10` fonctionne
-- vérifier les 3 langues
-- vérifier table + pagination
-- vérifier galerie + infinite scroll
-- vérifier qu'une ligne de table s'ouvre et se referme
-- vérifier qu'une cover s'affiche avec le bon titre et le bon artiste
-- vérifier que deux `audioUrl` de seeds différents ne jouent pas exactement la même chose
+- Verify that `GET /api/songs` Returns 20 songs correctly
+- Verify that the same seed returns the same tracks
+- Verify that `avgLikes=0`, `0.5`, `3.7`, `10` works
+- Verify the 3 languages
+- Verify table and pagination
+- Verify gallery and infinite scrolling
+- Verify that a table row opens and closes
+- Verify that a cover displays with the correct title and artist
+- Verify that two `audioUrl`s from different seeds do not play exactly the same thing
 
-## Push GitHub
+## Render Deployment
 
-À la racine du projet :
+The repo already contains a `render.yaml`.
 
-```powershell
-git init
-git add .
-git commit -m "Initial project setup"
-git branch -M main
-git remote add origin https://github.com/TON-USER/TON-REPO.git
-git push -u origin main
-```
-
-## Déploiement Render
-
-Le repo contient déjà un `render.yaml`.
-
-### Option simple
-
-1. pousse le projet sur GitHub
-2. connecte le repo à Render
-3. choisis Blueprint / `render.yaml`
-4. crée les 2 services :
-   - `music-store-api`
-   - `music-store-frontend`
+### Simple Option
 
 ### Important
 
-Dans `render.yaml`, la variable `VITE_API_URL` du frontend pointe vers :
+In `render.yaml`, the frontend variable `VITE_API_URL` points to:
 
 - `https://music-store-api.onrender.com/api`
 
-Si Render te donne un autre sous-domaine, remplace cette URL par la vraie URL du backend.
+If Render gives you a different subdomain, replace this URL with the actual backend URL.
 
-Le backend Render utilise un `Dockerfile` pour éviter les surprises de runtime sur .NET.
+The Render backend uses a `Dockerfile` to avoid runtime surprises on .NET.
 
-## Limites actuelles
+## Current Limitations
 
-- l'audio est bien généré, mais reste simple musicalement
-- les données sont plus réalistes qu'au début, mais peuvent encore être enrichies
-- pour un rendu plus propre, il faut tester une dernière fois en local avant le push
+- The audio is generated correctly, but remains musically simple.
+- The data is more realistic than initially, but can still be enriched.

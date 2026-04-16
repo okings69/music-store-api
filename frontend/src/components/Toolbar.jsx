@@ -40,15 +40,21 @@ export default function Toolbar({ params, onChange, onRandomizeSeed }) {
 
       <div className="control-group">
         <label htmlFor="avgLikes">Likes per song (0-10)</label>
-        <input
-          id="avgLikes"
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
-          value={params.avgLikes}
-          onChange={(event) => onChange({ avgLikes: Number(event.target.value) || 0 })}
-        />
+        <div className="likes-control">
+          <input
+            id="avgLikes"
+            className="likes-slider"
+            type="range"
+            min="0"
+            max="10"
+            step="0.1"
+            value={params.avgLikes}
+            onChange={(event) => onChange({ avgLikes: Number(event.target.value) || 0 })}
+          />
+          <output className="likes-value" htmlFor="avgLikes">
+            {Number(params.avgLikes).toFixed(1)}
+          </output>
+        </div>
       </div>
     </section>
   );
