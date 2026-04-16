@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: music-store-api
+    runtime: docker
+    plan: free
+    rootDir: backend/MusicStoreAPI
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+
+  - type: web
+    name: music-store-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://music-store-api.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
