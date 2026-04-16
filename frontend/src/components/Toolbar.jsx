@@ -41,28 +41,28 @@ export default function Toolbar({ params, onChange, onRandomizeSeed }) {
               aria-hidden="true"
             >
               <path
-                d="M16 7H20V11"
+                d="M16 5H20V9"
                 stroke="currentColor"
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
-                d="M4 18L10 18C11.2 18 11.8 18 12.3 17.7C12.74 17.46 13.11 17.09 13.35 16.65C13.64 16.12 13.64 15.47 13.64 14.18C13.64 12.89 13.64 12.24 13.93 11.71C14.17 11.27 14.54 10.9 14.98 10.66C15.51 10.36 16.16 10.36 17.45 10.36H20"
+                d="M4 7H7C8.3 7 8.95 7 9.53 7.22C10.3 7.51 10.96 8.04 11.42 8.74C11.77 9.27 12.06 9.85 12.65 11.01L12.78 11.26C13.37 12.42 13.66 13 14.01 13.53C14.47 14.23 15.13 14.76 15.9 15.05C16.48 15.27 17.13 15.27 18.43 15.27H20"
                 stroke="currentColor"
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
-                d="M16 17H20V13"
+                d="M16 19H20V15"
                 stroke="currentColor"
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
-                d="M4 6L10 6C11.2 6 11.8 6 12.3 6.3C12.74 6.54 13.11 6.91 13.35 7.35C13.64 7.88 13.64 8.53 13.64 9.82"
+                d="M4 17H7C8.28 17 8.92 17 9.49 16.79C10.25 16.5 10.89 15.98 11.35 15.3C11.69 14.79 11.98 14.24 12.55 13.14L13 12.25"
                 stroke="currentColor"
                 strokeWidth="2.2"
                 strokeLinecap="round"
