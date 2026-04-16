@@ -42,7 +42,7 @@ function App() {
         }
       } catch (loadError) {
         if (!ignore) {
-          setError("Impossible de charger les chansons.");
+          setError("Unable to load songs.");
         }
       } finally {
         if (!ignore) {

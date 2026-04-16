@@ -24,12 +24,12 @@ public class SongsController : ControllerBase
     {
         if (page < 1)
         {
-            return BadRequest(new { error = "Le paramètre 'page' doit être supérieur ou égal à 1." });
+            return BadRequest(new { error = "The 'page' parameter must be greater than or equal to 1." });
         }
 
         if (avgLikes < 0 || avgLikes > 10)
         {
-            return BadRequest(new { error = "Le paramètre 'avgLikes' doit être compris entre 0 et 10." });
+            return BadRequest(new { error = "The 'avgLikes' parameter must be between 0 and 10." });
         }
 
         try
@@ -39,7 +39,7 @@ public class SongsController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500, new { error = "Erreur lors de la génération des chansons", details = ex.Message });
+            return StatusCode(500, new { error = "Failed to generate songs", details = ex.Message });
         }
     }
 }

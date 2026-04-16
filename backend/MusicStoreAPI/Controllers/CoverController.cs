@@ -93,7 +93,6 @@ public class CoverController : ControllerBase
         }
         catch
         {
-            // If font discovery fails in the container, still return the generated artwork.
         }
     }
 
@@ -115,7 +114,6 @@ public class CoverController : ControllerBase
             }
             catch
             {
-                // Try the next installed family.
             }
         }
 

@@ -33,7 +33,7 @@ export const fetchSongs = async (seedOrParams, page, avgLikes, locale) => {
 
   const response = await fetch(`${API_BASE_URL}/songs?${params}`);
   if (!response.ok) {
-    throw new Error("Erreur lors du chargement des chansons");
+    throw new Error("Failed to load songs");
   }
 
   return response.json();
