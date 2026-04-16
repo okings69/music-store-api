@@ -56,8 +56,8 @@ public class CoverController : ControllerBase
             }
         });
 
-        var titleFont = SystemFonts.CreateFont("Arial", 26, FontStyle.Bold);
-        var artistFont = SystemFonts.CreateFont("Arial", 18);
+        var titleFont = CreateSafeFont(26, FontStyle.Bold);
+        var artistFont = CreateSafeFont(18);
 
         image.Mutate(ctx =>
         {
@@ -79,5 +79,31 @@ public class CoverController : ControllerBase
         ms.Seek(0, SeekOrigin.Begin);
 
         return File(ms, "image/png");
+    }
+
+    private static Font CreateSafeFont(float size, FontStyle style = FontStyle.Regular)
+    {
+        var preferredFamilies = new[]
+        {
+            "DejaVu Sans",
+            "Liberation Sans",
+            "Noto Sans",
+            "Arial"
+        };
+
+        foreach (var familyName in preferredFamilies)
+        {
+            try
+            {
+                return SystemFonts.CreateFont(familyName, size, style);
+            }
+            catch
+            {
+                // Try the next installed family.
+            }
+        }
+
+        var fallbackFamily = SystemFonts.Collection.Families.First();
+        return fallbackFamily.CreateFont(size, style);
     }
 }
