@@ -12,8 +12,9 @@ export default function SongTable({ songs }) {
       <table className="songs-table">
         <thead>
           <tr>
+            <th className="chevron-column" aria-label="Expand row"></th>
             <th>#</th>
-            <th>Title</th>
+            <th>Song</th>
             <th>Artist</th>
             <th>Album</th>
             <th>Genre</th>
@@ -38,9 +39,26 @@ export default function SongTable({ songs }) {
 function FragmentRow({ song, expanded, onToggle }) {
   return (
     <>
-      <tr className="summary-row" onClick={onToggle}>
+      <tr
+        className={`summary-row ${expanded ? "is-expanded" : ""}`}
+        onClick={onToggle}
+        aria-expanded={expanded}
+      >
+        <td className="chevron-cell">
+          <button
+            type="button"
+            className={`row-chevron ${expanded ? "is-open" : ""}`}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggle();
+            }}
+            aria-label={expanded ? `Collapse ${song.title}` : `Expand ${song.title}`}
+          >
+            <span></span>
+          </button>
+        </td>
         <td>{song.index}</td>
-        <td>{song.title}</td>
+        <td className="song-title-cell">{song.title}</td>
         <td>{song.artist}</td>
         <td>{song.album}</td>
         <td>{song.genre}</td>
@@ -49,14 +67,45 @@ function FragmentRow({ song, expanded, onToggle }) {
 
       {expanded ? (
         <tr className="detail-row">
-          <td colSpan="6">
-            <div className="detail-card">
-              <img className="detail-cover" src={song.coverUrl} alt={`Cover for ${song.title}`} />
+          <td colSpan="7">
+            <div className="detail-card detail-card-inline">
+              <div className="detail-cover-shell">
+                <img className="detail-cover" src={song.coverUrl} alt={`Cover for ${song.title}`} />
+                <div className="detail-like-badge">Likes {song.likes}</div>
+              </div>
 
               <div className="detail-copy">
-                <p className="detail-title">{song.title}</p>
-                <p className="detail-meta">{song.artist} • {song.album} • {song.genre}</p>
-                <p className="detail-review">{song.review}</p>
+                <div className="detail-topline">
+                  <p className="detail-title">{song.title}</p>
+                  <span className="detail-chip">{song.genre}</span>
+                </div>
+
+                <p className="detail-meta">
+                  <strong>{song.artist}</strong>
+                  <span>/</span>
+                  <span>{song.album}</span>
+                </p>
+
+                <div className="detail-facts">
+                  <div className="detail-fact">
+                    <span className="detail-fact-label">Track</span>
+                    <span>#{song.index}</span>
+                  </div>
+                  <div className="detail-fact">
+                    <span className="detail-fact-label">Album</span>
+                    <span>{song.album}</span>
+                  </div>
+                  <div className="detail-fact">
+                    <span className="detail-fact-label">Artist</span>
+                    <span>{song.artist}</span>
+                  </div>
+                </div>
+
+                <div className="detail-review-block">
+                  <span className="detail-review-label">Review</span>
+                  <p className="detail-review">{song.review}</p>
+                </div>
+
                 <audio controls preload="none" className="detail-audio">
                   <source src={song.audioUrl} type="audio/wav" />
                 </audio>
