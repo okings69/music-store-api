@@ -28,7 +28,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapGet("/healthz", () => Results.Ok(new { status = "ok" }));
 app.MapControllers();
