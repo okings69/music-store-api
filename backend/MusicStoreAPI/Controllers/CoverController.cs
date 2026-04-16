@@ -119,9 +119,9 @@ public class CoverController : ControllerBase
             }
         }
 
-        var fallbackFamily = SystemFonts.Collection.Families.FirstOrDefault();
-        if (fallbackFamily is not null)
+        if (SystemFonts.Collection.Families.Any())
         {
+            var fallbackFamily = SystemFonts.Collection.Families.First();
             return fallbackFamily.CreateFont(size, style);
         }
 
