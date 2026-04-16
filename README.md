@@ -145,3 +145,5 @@ The project includes a ready-to-use `render.yaml`.
 - add screenshot assets and a short demo GIF
 - refine loading states and skeleton UI
 - add architecture diagram and challenge/solution section
+
+![alt text](image.png)
