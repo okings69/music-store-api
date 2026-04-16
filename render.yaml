@@ -15,7 +15,7 @@ services:
     staticPublishPath: ./dist
     envVars:
       - key: VITE_API_URL
-        value: https://music-store-api.onrender.com/api
+        value: https://music-store-api-k1ty.onrender.com/api
     routes:
       - type: rewrite
         source: /*
