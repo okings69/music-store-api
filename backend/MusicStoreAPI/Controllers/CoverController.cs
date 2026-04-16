@@ -56,29 +56,45 @@ public class CoverController : ControllerBase
             }
         });
 
-        var titleFont = CreateSafeFont(26, FontStyle.Bold);
-        var artistFont = CreateSafeFont(18);
-
         image.Mutate(ctx =>
         {
             ctx.Fill(Color.Black.WithAlpha(0.18f), new RectangularPolygon(18, 188, width - 36, 88));
-            ctx.DrawText(new RichTextOptions(titleFont)
-            {
-                Origin = new PointF(24, 198),
-                WrappingLength = width - 48
-            }, title, Color.White);
-            ctx.DrawText(new RichTextOptions(artistFont)
-            {
-                Origin = new PointF(24, 246),
-                WrappingLength = width - 48
-            }, artist, Color.WhiteSmoke);
         });
+
+        TryDrawText(image, title, artist, width);
 
         var ms = new MemoryStream();
         image.SaveAsPng(ms);
         ms.Seek(0, SeekOrigin.Begin);
 
         return File(ms, "image/png");
+    }
+
+    private static void TryDrawText(Image<Rgba32> image, string title, string artist, int width)
+    {
+        try
+        {
+            var titleFont = CreateSafeFont(26, FontStyle.Bold);
+            var artistFont = CreateSafeFont(18);
+
+            image.Mutate(ctx =>
+            {
+                ctx.DrawText(new RichTextOptions(titleFont)
+                {
+                    Origin = new PointF(24, 198),
+                    WrappingLength = width - 48
+                }, title, Color.White);
+                ctx.DrawText(new RichTextOptions(artistFont)
+                {
+                    Origin = new PointF(24, 246),
+                    WrappingLength = width - 48
+                }, artist, Color.WhiteSmoke);
+            });
+        }
+        catch
+        {
+            // If font discovery fails in the container, still return the generated artwork.
+        }
     }
 
     private static Font CreateSafeFont(float size, FontStyle style = FontStyle.Regular)
@@ -103,7 +119,12 @@ public class CoverController : ControllerBase
             }
         }
 
-        var fallbackFamily = SystemFonts.Collection.Families.First();
-        return fallbackFamily.CreateFont(size, style);
+        var fallbackFamily = SystemFonts.Collection.Families.FirstOrDefault();
+        if (fallbackFamily is not null)
+        {
+            return fallbackFamily.CreateFont(size, style);
+        }
+
+        throw new InvalidOperationException("No system fonts are available.");
     }
 }
