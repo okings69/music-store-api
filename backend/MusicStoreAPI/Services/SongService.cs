@@ -47,7 +47,7 @@ public class SongService
                 Album = album,
                 Genre = genre,
                 Likes = likes,
-                CoverUrl = GenererCoverUrl(title, artist, songSeed),
+                CoverUrl = GenererCoverUrl(title, artist, genre, songSeed),
                 AudioUrl = GenererAudioUrl(songSeed, genre),
                 Review = GenererAvis(songRandom, locale, title, artist, album, genre, likes)
             });
@@ -128,11 +128,12 @@ public class SongService
         return floor + (random.NextDouble() < probability ? 1 : 0);
     }
 
-    private string GenererCoverUrl(string title, string artist, int seed)
+    private string GenererCoverUrl(string title, string artist, string genre, int seed)
     {
         var encodedTitle = Uri.EscapeDataString(title);
         var encodedArtist = Uri.EscapeDataString(artist);
-        return $"{GetApiBaseUrl()}/cover?title={encodedTitle}&artist={encodedArtist}&seed={Math.Abs(seed)}";
+        var encodedGenre = Uri.EscapeDataString(genre);
+        return $"{GetApiBaseUrl()}/cover?title={encodedTitle}&artist={encodedArtist}&genre={encodedGenre}&seed={Math.Abs(seed)}";
     }
 
     private string GenererAudioUrl(int seed, string genre)
